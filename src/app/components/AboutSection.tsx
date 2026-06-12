@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import imgPixelArt from "../../imports/image-1.png";
+import imgPixelArt from "../../imports/Sprite-01_developer.gif";
 
 export function AboutSection() {
   const ref = useRef(null);

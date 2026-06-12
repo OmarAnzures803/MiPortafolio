@@ -22,3 +22,15 @@ Thumbs.db
 # Vite / editor cache
 .vite/
 .vscode/
+
+# Figma
+.figma-cache/
+src/app/components/figma/
+src/imports/EducationSection/
+src/imports/Frame9/
+src/components/Archivos_animacion/
+
+# Other
+*.zip
+*.md
+
