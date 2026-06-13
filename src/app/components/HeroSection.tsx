@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import imgAvatar from "../../imports/Frame9/5ece9633dfae30c74e9ee76a13fd5a6f23357242.png";
+import imgAvatar from "../../imports/Omar.jpeg";
 
 export function HeroSection() {
   function scrollToAbout() {
