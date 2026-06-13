@@ -7,8 +7,12 @@ export function HeroSection() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center pt-20 pb-8 px-4">
+    <section
+      className="min-h-screen flex items-center justify-center pt-20 pb-8 px-4"
+      style={{ position: "relative", zIndex: 50 }}
+    >
       <motion.div
+        data-hero-card
         initial={{ opacity: 0, y: 40, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}

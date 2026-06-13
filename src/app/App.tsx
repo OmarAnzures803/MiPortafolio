@@ -1,6 +1,6 @@
 import { Navbar } from "./components/Navbar";
-import { HeroSection } from "./components/Archivos_animacion/HeroSection";
-import { AboutSection } from "./components/Archivos_animacion/AboutSection";
+import { HeroSection } from "./components/HeroSection";
+import { AboutSection } from "./components/AboutSection";
 import { TabbedSection } from "./components/TabbedSection";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { ContactSection } from "./components/ContactSection";
