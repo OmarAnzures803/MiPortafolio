@@ -3,9 +3,9 @@ import { motion, useInView } from "motion/react";
 import { Github, Linkedin, Mail } from "lucide-react";
 
 const links = [
-  { icon: Github, label: "GitHub", href: "https://github.com/", handle: "@tu-usuario" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/", handle: "Omar Anzures" },
-  { icon: Mail, label: "Email", href: "mailto:tu@email.com", handle: "tu@email.com" },
+  { icon: Github, label: "GitHub", href: "https://github.com/OmarAnzures803.git", handle: "@OmarAnzures803" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/OmarAnzures", handle: "Omar Anzures" },
+  { icon: Mail, label: "Email", href: "mailto:omaranzures803@gmail.com", handle: "omaranzures803@gmail.com" },
 ];
 
 export function ContactSection() {
@@ -88,7 +88,7 @@ export function ContactSection() {
             className="mt-4 pt-8 border-t border-white/10 w-full text-center"
           >
             <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "0.85rem", color: "#767676" }}>
-              © 2025 Omar Anzures Campos · Hecho con React 18 + Tailwind CSS
+              © 2026 Omar Anzures Campos · OmarAnzures083
             </p>
           </motion.div>
         </motion.div>

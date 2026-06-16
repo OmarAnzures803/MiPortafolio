@@ -1,0 +1,11 @@
+
+
+
+
+/* En global.css - usa un selector más específico */
+div .md\:pl-14,
+.md\:pl-14.md\:pl-14 {
+    @media (width >= 48rem) {
+        padding-left: calc(var(--spacing) * 20) !important;
+    }
+}

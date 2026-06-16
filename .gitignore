@@ -29,8 +29,12 @@ src/app/components/figma/
 src/imports/EducationSection/
 src/imports/Frame9/
 src/components/Archivos_animacion/
+src/imports/Letras_en_PNG/
+src/imports/Archivos_Actualizado/
 
 # Other
 *.zip
 *.md
+*.txt
+*.b64
 

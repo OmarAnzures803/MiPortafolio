@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { motion, useInView, useScroll, useMotionValue } from "motion/react";
-import imgGif from "../../imports/Sprite-01_developer.gif";
+import imgGif     from "../../imports/Sprite-01_developer.gif";
 import imgHandsUp from "../../imports/Sprite-01_developer_HandsUp.png";
 
 // ─── PARÁMETROS AJUSTABLES ───────────────────────────────────────────────────
@@ -48,7 +48,7 @@ function calcRotation(p: number): number {
 
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const spriteRef = useRef<HTMLDivElement>(null);
+  const spriteRef  = useRef<HTMLDivElement>(null);
 
   // ⚠️  La animación de entrada de la columna izquierda usa SOLO opacidad.
   //    Si se añade x/y al initial, getBoundingClientRect() devuelve posiciones
@@ -58,25 +58,25 @@ export function AboutSection() {
   const { scrollY } = useScroll(); // scroll global, sin target → sin warning
 
   // MotionValues del PNG (actualizados en cada tick de scroll)
-  const pngTop = useMotionValue(2500); // arranca fuera de pantalla
+  const pngTop  = useMotionValue(2500); // arranca fuera de pantalla
   const pngLeft = useMotionValue(0);
-  const pngW = useMotionValue(300);
-  const pngH = useMotionValue(300);
-  const pngOp = useMotionValue(0);
-  const pngRot = useMotionValue(SPIN_DEGREES);
-  const gifOp = useMotionValue(0);
+  const pngW    = useMotionValue(300);
+  const pngH    = useMotionValue(300);
+  const pngOp   = useMotionValue(0);
+  const pngRot  = useMotionValue(SPIN_DEGREES);
+  const gifOp   = useMotionValue(0);
 
   useEffect(() => {
     function update(s: number) {
       const heroCard = document.querySelector("[data-hero-card]") as HTMLElement | null;
-      const sprite = spriteRef.current;
+      const sprite   = spriteRef.current;
       if (!heroCard || !sprite) return;
 
-      const heroRect = heroCard.getBoundingClientRect();
+      const heroRect   = heroCard.getBoundingClientRect();
       const spriteRect = sprite.getBoundingClientRect();
 
       // Posiciones de PÁGINA (no cambian con el scroll)
-      const heroBottomPage = heroRect.bottom + s;
+      const heroBottomPage   = heroRect.bottom + s;
       const spriteCenterPage = spriteRect.top + spriteRect.height / 2 + s;
 
       // Alineación horizontal exacta al sprite del GIF
@@ -85,11 +85,11 @@ export function AboutSection() {
       pngH.set(spriteRect.height);
 
       // Rango del scroll donde ocurre la animación completa
-      const animEnd = Math.max(1, spriteCenterPage - window.innerHeight * ANIM_END_FACTOR);
+      const animEnd  = Math.max(1, spriteCenterPage - window.innerHeight * ANIM_END_FACTOR);
       const progress = Math.min(1, Math.max(0, s / animEnd));
 
       // Posición vertical: interpola en coordenadas de página, luego convierte a viewport
-      const pngCenterPage = heroBottomPage + (spriteCenterPage - heroBottomPage) * progress;
+      const pngCenterPage  = heroBottomPage + (spriteCenterPage - heroBottomPage) * progress;
       const pngTopViewport = pngCenterPage - s - spriteRect.height / 2;
       pngTop.set(pngTopViewport);
 
@@ -130,7 +130,7 @@ export function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      style={{ position: "relative", zIndex: 40 }}
+      style={{ position: "relative" }}
       className="px-4 py-6"
     >
       {/*
@@ -143,19 +143,19 @@ export function AboutSection() {
       <motion.div
         aria-hidden
         style={{
-          position: "fixed",
-          top: pngTop,
-          left: pngLeft,
-          width: pngW,
-          height: pngH,
-          opacity: pngOp,
-          rotate: pngRot,
+          position:        "fixed",
+          top:             pngTop,
+          left:            pngLeft,
+          width:           pngW,
+          height:          pngH,
+          opacity:         pngOp,
+          rotate:          pngRot,
           transformOrigin: "center center",
-          zIndex: 40,
-          pointerEvents: "none",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          zIndex:          40,
+          pointerEvents:   "none",
+          display:         "flex",
+          alignItems:      "center",
+          justifyContent:  "center",
         }}
       >
         <img
@@ -201,8 +201,8 @@ export function AboutSection() {
             style={{
               fontFamily: "'Ubuntu Mono', monospace",
               fontWeight: 700,
-              fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
-              color: "#909090",
+              fontSize:   "clamp(1.2rem, 2.5vw, 1.8rem)",
+              color:      "#909090",
             }}
           >
             ¿Cómo me defino a mí mismo?
@@ -211,8 +211,8 @@ export function AboutSection() {
             style={{
               fontFamily: "'Atkinson Hyperlegible', sans-serif",
               fontWeight: 700,
-              fontSize: "clamp(0.95rem, 1.8vw, 1.25rem)",
-              color: "white",
+              fontSize:   "clamp(0.95rem, 1.8vw, 1.25rem)",
+              color:      "white",
               lineHeight: 1.6,
             }}
           >

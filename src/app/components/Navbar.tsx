@@ -27,14 +27,27 @@ export function Navbar() {
 
   return (
     <>
+      {/*
+        position: sticky en lugar de fixed.
+        Razón: si cualquier ancestro tiene un CSS transform aplicado (por ejemplo,
+        por Motion durante animaciones), los elementos con position:fixed se
+        posicionan relativos a ese ancestro transformado y dejan de ser interactuables.
+        position:sticky no tiene esa restricción y siempre funciona sobre el
+        contenedor de scroll normal.
+
+        z-index: 9999 en el mismo objeto style — un solo style prop es obligatorio,
+        dos style props en el mismo elemento hace que el segundo sobreescriba al primero.
+      */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300"
+        className="sticky top-0 left-0 right-0 flex items-center justify-between px-6 py-4 transition-colors duration-300"
         style={{
-          background: scrolled ? "rgba(0,0,0,0.85)" : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
+          zIndex:         9999,
+          background:     scrolled ? "rgba(0,0,0,0.88)" : "transparent",
+          backdropFilter: scrolled ? "blur(14px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(14px)" : "none",
         }}
       >
         <span
@@ -81,7 +94,7 @@ export function Navbar() {
         </button>
       </motion.nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — fixed es correcto aquí (overlay de pantalla completa) */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -89,7 +102,8 @@ export function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="fixed inset-0 z-[60] bg-black flex flex-col items-start justify-center px-8 gap-8"
+            className="fixed inset-0 bg-black flex flex-col items-start justify-center px-8 gap-8"
+            style={{ zIndex: 10000 }}
           >
             <button
               className="absolute top-5 right-6 text-white bg-transparent border-none cursor-pointer"

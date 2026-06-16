@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
+import '../../styles/globals.css';
 
 // ─── Education ───────────────────────────────────────────────────────────────
 
