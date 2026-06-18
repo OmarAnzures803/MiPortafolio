@@ -51,9 +51,9 @@ const BASE_WIDTH   = 1060;
  * Ancho del card (border-box) por debajo del cual se activa el layout mobile.
  * A viewport 1024px el card mide ~992px (1024 - 32px de px-4 en la sección).
  */
-const MOBILE_BREAK = 992;
+const MOBILE_BREAK = 768;
 /** Escala mínima permitida en modo desktop antes de cambiar a mobile. */
-const MIN_SCALE    = 0.5;
+const MIN_SCALE    = 0.4;
 
 // ─── LETRAS ──────────────────────────────────────────────────────────────────
 
@@ -114,11 +114,11 @@ const PHOTO_GRADIENT = `url("data:image/svg+xml;utf8,<svg viewBox='0 0 363 357' 
 /** Bloque foto reutilizable (foto + gradiente). */
 function PhotoBlock({ style }: { style?: React.CSSProperties }) {
   return (
-    <div style={{ position: "absolute", inset: 0 }} aria-hidden>
+    <div style={{ position: "relative", width: "100%", height: "100%" }} aria-hidden>
       {/* gradiente primero (DOM) → detrás de la foto */}
-      <div style={{ position: "absolute", inset: 0, backgroundImage: PHOTO_GRADIENT }} />
+      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundImage: PHOTO_GRADIENT }} />
       {/* foto después (DOM) → encima del gradiente */}
-      <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", overflow: "hidden" }}>
         <img
           alt="Omar Anzures Campos"
           src={imgPhoto}
@@ -135,9 +135,6 @@ export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef    = useRef<HTMLDivElement>(null);
 
-  // Ancho visual (border-box) del card, actualizado con ResizeObserver.
-  // Inicio con viewport - 32px (la sección tiene px-4 = 16px en cada lado)
-  // como aproximación hasta que ResizeObserver mida el valor exacto.
   const [cardWidth, setCardWidth] = useState<number>(() =>
     typeof window !== "undefined" ? Math.min(window.innerWidth - 32, 1320) : 1320,
   );
@@ -147,24 +144,12 @@ export function HeroSection() {
     if (!card) return;
 
     const measure = () => {
-      // offsetWidth → ancho del border-box de LAYOUT, sin CSS transforms.
-      //
-      // getBoundingClientRect().width devuelve el ancho VISUAL después de
-      // aplicar transforms. Como el card tiene initial={{ scale: 0.98 }} de
-      // Motion, si measure() corre durante la animación de entrada captura
-      // cardWidth = layoutWidth × 0.98 (~2% menos). ResizeObserver solo
-      // dispara ante cambios de layout (no de transforms), así que ese valor
-      // queda stale cuando la animación termina y el scale llega a 1.
-      // Eso hacía que isMobile se activara ~2% antes del threshold correcto
-      // (aparecía en ~1046px en vez de ~992px de layout).
-      //
-      // offsetWidth no incluye transforms → siempre devuelve el layout width.
       setCardWidth(card.offsetWidth);
     };
 
     const obs = new ResizeObserver(measure);
     obs.observe(card);
-    measure(); // medición inicial inmediata
+    measure();
     return () => obs.disconnect();
   }, []);
 
@@ -178,7 +163,6 @@ export function HeroSection() {
     if (!target) return;
 
     const startY   = window.scrollY;
-    // Posición de scroll donde el tope del #about queda en el tope del viewport
     const targetY  = target.getBoundingClientRect().top + window.scrollY;
     const distance = targetY - startY;
     let   startTime: number | null = null;
@@ -186,7 +170,6 @@ export function HeroSection() {
     function step(now: number) {
       if (startTime === null) startTime = now;
       const elapsed  = now - startTime;
-      // Progreso [0, 1] clampeado para no sobrepasar
       const progress = Math.min(1, elapsed / SCROLL_DURATION);
       window.scrollTo(0, startY + distance * easeScroll(progress));
       if (progress < 1) requestAnimationFrame(step);
@@ -195,18 +178,33 @@ export function HeroSection() {
     requestAnimationFrame(step);
   }
 
-  // ── Desktop: escala del Container1 ─────────────────────────────────────────
-  const isMobile     = cardWidth < MOBILE_BREAK;
-  const desktopScale = Math.min(1, Math.max(MIN_SCALE, cardWidth / BASE_WIDTH));
+  // ── Responsive ──────────────────────────────────────────────────────────────
+  const isMobile = cardWidth < MOBILE_BREAK;
+  
+  // Escala del contenido (de 0.4 en 768px a 1 en 1060px, máximo 1)
+  // Escala del contenido (de 0.4 en 768px, sin máximo)
+const contentScale = isMobile 
+  ? 1 
+  : Math.max(MIN_SCALE, cardWidth / BASE_WIDTH);
 
-  /*
-   * Container1 es absolute → no contribuye al alto del card.
-   * El card necesita minHeight explícito que refleje el alto visual escalado:
-   *   top(26) + height(399)*scale + bottom_gap(80)
-   */
-  const cardMinHeight = isMobile
+  // Dimensiones del contenedor escalado
+  const desktopContainerHeight = 399 * contentScale;
+  const desktopContainerTop = 26 * contentScale;
+  const desktopContainerLeft = 52 * contentScale;
+  const desktopContainerWidth = 952 * contentScale;
+
+  // Altura mínima del card (crece verticalmente con el contenido)
+   const cardMinHeight = isMobile
     ? "auto"
-    : Math.max(280, Math.ceil(26 + 399 * desktopScale + 80));
+    : Math.max(280, Math.ceil(
+        desktopContainerTop + 
+        desktopContainerHeight + 
+        40 * contentScale 
+      ));
+  // Padding responsivo
+  const cardPadding = isMobile 
+    ? "clamp(20px, 5vw, 40px)" 
+    : `${56 * contentScale}px`;
 
   const letters = LETTER_DATA.map((datum) => (
     <AnimatedLetter key={datum.key} datum={datum} scrollYProgress={scrollYProgress} />
@@ -219,9 +217,7 @@ export function HeroSection() {
       style={{ position: "relative" }}
     >
       <motion.div
-        // Referencia para medir el ancho del card
         ref={cardRef}
-        // Referencia para el sprite del AboutSection
         data-hero-card
         initial={{ opacity: 0, y: 24, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -230,38 +226,39 @@ export function HeroSection() {
         style={{
           maxWidth:  "1320px",
           minHeight: cardMinHeight,
-          padding:   "56px",
+          padding:   cardPadding,
           zIndex:    10000,
         }}
       >
-        {/* ═══════════════════════════════════════════════════════════════════
-            MODO DESKTOP (≥ 1024 px)
-            ────────────────────────────────────────────────────────────────
-            El Container1 se escala entero con transform: scale(desktopScale).
-            transform-origin: top left mantiene el anclaje superior-izquierdo.
-            Toda la armonía entre la foto y el texto se preserva intacta.
-        ═══════════════════════════════════════════════════════════════════ */}
+        {/* MODO DESKTOP (≥ 768 px) */}
         {!isMobile && (
           <div
-            className="absolute"
             style={{
-              height:          "399px",
-              left:            "52px",
-              top:             "26px",
-              width:           "952px",
-              transform:       `scale(${desktopScale})`,
-              transformOrigin: "top left",
+              position: "absolute",
+              height: `${desktopContainerHeight}px`,
+              left: `${desktopContainerLeft}px`,
+              top: `${desktopContainerTop}px`,
+              width: `${desktopContainerWidth}px`,
             }}
           >
             <div className="content-stretch flex flex-col gap-[16px] items-start relative size-full">
-
-              {/* FOTO — primera en DOM → detrás de las letras */}
-              <div className="absolute" style={{ height: "357px", left: "575px", top: "64px", width: "363px" }}>
+              {/* FOTO */}
+              <div style={{ 
+                height: `${357 * contentScale}px`, 
+                left: `${575 * contentScale}px`, 
+                top: `${64 * contentScale}px`, 
+                width: `${363 * contentScale}px`, 
+                position: "absolute" 
+              }}>
                 <PhotoBlock />
               </div>
 
-              {/* SVG DEL NOMBRE — después de la foto en DOM → encima */}
-              <div className="relative shrink-0" style={{ height: "243px", width: "952px", overflow: "visible" }}>
+              {/* SVG DEL NOMBRE */}
+              <div className="relative shrink-0" style={{ 
+                height: `${243 * contentScale}px`, 
+                width: `${952 * contentScale}px`, 
+                overflow: "visible" 
+              }}>
                 <svg
                   className="absolute block inset-0 size-full"
                   fill="none"
@@ -279,115 +276,109 @@ export function HeroSection() {
                 style={{
                   fontFamily: "'Atkinson Hyperlegible', sans-serif",
                   fontWeight: 700,
-                  fontSize:   "32px",
-                  lineHeight: "48px",
+                  fontSize: `${32 * contentScale}px`,
+                  lineHeight: `${48 * contentScale}px`,
                 }}
               >
                 Desarrollador de Software
               </p>
 
               {/* BOTÓN */}
-              <div style={{ paddingTop: "16px" }}>
+              <div style={{ paddingTop: `${16 * contentScale}px` }}>
                 <button
                   onClick={scrollToAbout}
                   className="flex items-center gap-2 bg-transparent cursor-pointer"
                   style={{
-                    padding:      "12.8px 24.8px",
+                    padding: `${12.8 * contentScale}px ${24.8 * contentScale}px`,
                     borderRadius: "9999px",
-                    border:       "0.8px solid rgba(255,255,255,0.2)",
-                    fontFamily:   "'Atkinson Hyperlegible', sans-serif",
-                    fontSize:     "16px",
-                    color:        "#b0b0b0",
-                    lineHeight:   "24px",
+                    border: "0.8px solid rgba(255,255,255,0.2)",
+                    fontFamily: "'Atkinson Hyperlegible', sans-serif",
+                    fontSize: `${16 * contentScale}px`,
+                    color: "#b0b0b0",
+                    lineHeight: `${24 * contentScale}px`,
                   }}
                 >
                   Conóceme
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d={svgPaths.p98bfb80} stroke="#B0B0B0" strokeLinecap="round" strokeWidth="1.33333" />
+                  <svg width={16 * contentScale} height={16 * contentScale} viewBox="0 0 16 16" fill="none">
+                    <path d={svgPaths.p98bfb80} stroke="#B0B0B0" strokeLinecap="round" strokeWidth={1.33333 * contentScale} />
                   </svg>
                 </button>
               </div>
-
             </div>
           </div>
         )}
 
-        {/* ═══════════════════════════════════════════════════════════════════
-            MODO MOBILE (< 1024 px)
-            ────────────────────────────────────────────────────────────────
-            Layout apilado: SVG del nombre arriba, foto abajo-derecha.
-            El SVG usa width:100% + height:auto para escalar proporcionalmente.
-        ═══════════════════════════════════════════════════════════════════ */}
+        {/* MODO MOBILE (< 768 px) */}
         {isMobile && (
           <div
             style={{
-              padding:       "clamp(20px, 5vw, 40px)",
-              display:       "flex",
-              flexDirection: "column",
-              gap:           "clamp(12px, 3vw, 20px)",
-              position:      "relative",
-            }}
-          >
-            {/* SVG nombre — escala con el ancho disponible */}
-            <div style={{ position: "relative", overflow: "visible" }}>
-              <svg
-                viewBox="0 0 918.202 236.058"
-                preserveAspectRatio="xMinYMid meet"
-                fill="none"
-                style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}
-              >
-                {letters}
-              </svg>
-            </div>
-
-            {/* Subtítulo */}
-            <p
-              className="text-white"
-              style={{
-                fontFamily: "'Atkinson Hyperlegible', sans-serif",
-                fontWeight: 700,
-                fontSize:   "clamp(15px, 4vw, 24px)",
-                lineHeight: 1.4,
+              padding: "clamp(20px, 5vw, 40px)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "clamp(12px, 3vw, 20px)",
+                position: "relative",
               }}
             >
-              Desarrollador de Software
-            </p>
+              {/* SVG nombre */}
+              <div style={{ position: "relative", overflow: "visible" }}>
+                <svg
+                  viewBox="0 0 918.202 236.058"
+                  preserveAspectRatio="xMinYMid meet"
+                  fill="none"
+                  style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}
+      >
+        {letters}
+      </svg>
+    </div>
 
-            {/* Botón */}
-            <div>
-              <button
-                onClick={scrollToAbout}
-                className="flex items-center gap-2 bg-transparent cursor-pointer"
-                style={{
-                  padding:      "10px 20px",
-                  borderRadius: "9999px",
-                  border:       "0.8px solid rgba(255,255,255,0.2)",
-                  fontFamily:   "'Atkinson Hyperlegible', sans-serif",
-                  fontSize:     "clamp(13px, 3.5vw, 16px)",
-                  color:        "#b0b0b0",
-                }}
-              >
-                Conóceme
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d={svgPaths.p98bfb80} stroke="#B0B0B0" strokeLinecap="round" strokeWidth="1.33333" />
-                </svg>
-              </button>
-            </div>
+    {/* Subtítulo */}
+    <p
+      className="text-white"
+      style={{
+        fontFamily: "'Atkinson Hyperlegible', sans-serif",
+        fontWeight: 700,
+        fontSize: "clamp(15px, 4vw, 24px)",
+        lineHeight: 1.4,
+      }}
+    >
+      Desarrollador de Software
+    </p>
 
-            {/* Foto — abajo a la derecha */}
-            <div
-              style={{
-                position:  "relative",
-                alignSelf: "flex-end",
-                width:     "clamp(160px, 45%, 300px)",
-                height:    "clamp(160px, 46%, 310px)",
-                marginTop: "clamp(8px, 2vw, 16px)",
-              }}
-            >
-              <PhotoBlock />
-            </div>
-          </div>
-        )}
+    {/* Botón */}
+    <div>
+      <button
+        onClick={scrollToAbout}
+        className="flex items-center gap-2 bg-transparent cursor-pointer"
+        style={{
+          padding: "10px 20px",
+          borderRadius: "9999px",
+          border: "0.8px solid rgba(255,255,255,0.2)",
+          fontFamily: "'Atkinson Hyperlegible', sans-serif",
+          fontSize: "clamp(13px, 3.5vw, 16px)",
+          color: "#b0b0b0",
+        }}
+      >
+        Conóceme
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d={svgPaths.p98bfb80} stroke="#B0B0B0" strokeLinecap="round" strokeWidth="1.33333" />
+        </svg>
+      </button>
+    </div>
+
+    {/* Foto */}
+    <div
+      style={{
+        position: "relative",
+        alignSelf: "flex-end",
+        width: "clamp(160px, 45%, 300px)",
+        aspectRatio: "363 / 357",
+        marginTop: "clamp(8px, 2vw, 16px)",
+      }}
+    >
+      <PhotoBlock />
+    </div>
+  </div>
+)}
       </motion.div>
     </section>
   );
