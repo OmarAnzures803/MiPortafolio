@@ -39,6 +39,7 @@ export function Navbar() {
         dos style props en el mismo elemento hace que el segundo sobreescriba al primero.
       */}
       <motion.nav
+        id="main-navbar"
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}

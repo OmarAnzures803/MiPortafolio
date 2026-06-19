@@ -134,6 +134,8 @@ function PhotoBlock({ style }: { style?: React.CSSProperties }) {
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef    = useRef<HTMLDivElement>(null);
+  const navbarRef  = useRef<HTMLElement | null>(null);
+  const [navbarHeight, setNavbarHeight] = useState(0);
 
   const [cardWidth, setCardWidth] = useState<number>(() =>
     typeof window !== "undefined" ? Math.min(window.innerWidth - 32, 1320) : 1320,
@@ -151,6 +153,23 @@ export function HeroSection() {
     obs.observe(card);
     measure();
     return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Un selector específico para evitar capturar otro <nav>.
+    const navbar = document.querySelector('#main-navbar') as HTMLElement;
+    
+    if (navbar) {
+      navbarRef.current = navbar;
+      setNavbarHeight(navbar.offsetHeight);
+
+      // Actualiza cuando cambie el tamaño de la navbar
+      const resizeObserver = new ResizeObserver(() => {
+        setNavbarHeight(navbar.offsetHeight);
+      });
+      resizeObserver.observe(navbar);
+      return () => resizeObserver.disconnect();
+    }
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -203,8 +222,11 @@ const contentScale = isMobile
       ));
   // Padding responsivo
   const cardPadding = isMobile 
-    ? "clamp(20px, 5vw, 40px)" 
+    ? "clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px) 0 px" 
     : `${56 * contentScale}px`;
+
+  // Asegura que el card no sea más alto que el viewport
+  const maxCardHeight = `calc(100vh - ${navbarHeight + 40}px)`;
 
   const letters = LETTER_DATA.map((datum) => (
     <AnimatedLetter key={datum.key} datum={datum} scrollYProgress={scrollYProgress} />
@@ -213,8 +235,13 @@ const contentScale = isMobile
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center pb-8 px-4"
-      style={{ position: "relative" }}
+      className="flex items-center justify-center px-4"
+      style={{ // Resto del espacio vertical para el card, con un mínimo de 280px para evitar colapsos en mobile */
+      minHeight: `calc(100vh - ${navbarHeight}px)`,
+      paddingTop: "0px",  // Evita desplazar el card; flex se encarga del centrado
+      paddingBottom: "20px",            // Pequeño margen inferior
+      position: "relative",
+    }}
     >
       <motion.div
         ref={cardRef}
@@ -226,8 +253,10 @@ const contentScale = isMobile
         style={{
           maxWidth:  "1320px",
           minHeight: cardMinHeight,
+          maxHeight: maxCardHeight, // evita que el card crezca más que el viewport (menos navbar)
           padding:   cardPadding,
           zIndex:    10000,
+          overflowY: "auto", // permite scroll interno si el contenido es muy alto (modo desktop con escala baja)
         }}
       >
         {/* MODO DESKTOP (≥ 768 px) */}
@@ -326,38 +355,40 @@ const contentScale = isMobile
                   preserveAspectRatio="xMinYMid meet"
                   fill="none"
                   style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}
-      >
-        {letters}
-      </svg>
-    </div>
+                >
+                {letters}
+                </svg>
+              </div>
 
-    {/* Subtítulo */}
-    <p
-      className="text-white"
-      style={{
-        fontFamily: "'Atkinson Hyperlegible', sans-serif",
-        fontWeight: 700,
-        fontSize: "clamp(15px, 4vw, 24px)",
-        lineHeight: 1.4,
-      }}
-    >
+              {/* Subtítulo */}
+              <p
+                className="text-white"
+                  style={{
+                    fontFamily: "'Atkinson Hyperlegible', sans-serif",
+                    fontWeight: 700,
+                    fontSize: "clamp(15px, 4vw, 24px)",
+                    lineHeight: 1.4,
+                    }}
+            >
       Desarrollador de Software
     </p>
 
-    {/* Botón */}
-    <div>
-      <button
-        onClick={scrollToAbout}
-        className="flex items-center gap-2 bg-transparent cursor-pointer"
-        style={{
-          padding: "10px 20px",
-          borderRadius: "9999px",
-          border: "0.8px solid rgba(255,255,255,0.2)",
-          fontFamily: "'Atkinson Hyperlegible', sans-serif",
-          fontSize: "clamp(13px, 3.5vw, 16px)",
-          color: "#b0b0b0",
-        }}
-      >
+    {/* Botón - con z-index mayor */}
+<div style={{ position: "relative", zIndex: 2 }}>
+  <button
+    onClick={scrollToAbout}
+    className="flex items-center gap-2 bg-transparent cursor-pointer"
+    style={{
+      padding: "10px 20px",
+      borderRadius: "9999px",
+      border: "0.8px solid rgba(255,255,255,0.2)",
+      fontFamily: "'Atkinson Hyperlegible', sans-serif",
+      fontSize: "clamp(13px, 3.5vw, 16px)",
+      color: "#b0b0b0",
+      position: "relative", // Asegura que z-index funcione
+      zIndex: 2,
+    }}
+  >
         Conóceme
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d={svgPaths.p98bfb80} stroke="#B0B0B0" strokeLinecap="round" strokeWidth="1.33333" />
@@ -365,16 +396,20 @@ const contentScale = isMobile
       </button>
     </div>
 
-    {/* Foto */}
-    <div
-      style={{
-        position: "relative",
-        alignSelf: "flex-end",
-        width: "clamp(160px, 45%, 300px)",
-        aspectRatio: "363 / 357",
-        marginTop: "clamp(8px, 2vw, 16px)",
-      }}
-    >
+    {/* Foto - con z-index menor */}
+<div
+  style={{
+    position: "relative",
+    alignSelf: "flex-end",
+    width: "clamp(275px, 78%, 320px)",
+    aspectRatio: "363 / 357",
+    marginTop: "-50px",
+    zIndex: 1, // Menor que el botón
+    ...(typeof window !== 'undefined' && window.innerWidth <= 425 && {
+      alignSelf: "center",
+    })
+  }}
+>
       <PhotoBlock />
     </div>
   </div>
