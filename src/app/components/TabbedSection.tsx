@@ -2,6 +2,10 @@ import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import '../../styles/globals.css';
 
+import educationIcon from '../assets/Sprite-birrete.png';
+import toolsIcon from '../assets/Sprite-herramientas02.png';
+import careerIcon from '../assets/Sprite-medalla.png';
+
 // ─── Education ───────────────────────────────────────────────────────────────
 
 const education = [
@@ -154,15 +158,120 @@ function CareerContent() {
   );
 }
 
-// ─── Tabbed Container ─────────────────────────────────────────────────────────
+// ─── Definir el tipo de los tabs ─────────────────────────────────────────────
 
-const tabs = [
-  { id: "education", label: "Antecedentes Educativos" },
-  { id: "tools", label: "Herramientas" },
-  { id: "career", label: "Carrera" },
-] as const;
+type Tab = {
+  readonly id: "education" | "tools" | "career";
+  readonly label: string;
+  readonly icon: string;
+};
+
+const tabs: Tab[] = [
+  { id: "education", label: "Antecedentes Educativos", icon: educationIcon },
+  { id: "tools", label: "Herramientas", icon: toolsIcon },
+  { id: "career", label: "Carrera", icon: careerIcon },
+];
 
 type TabId = typeof tabs[number]["id"];
+
+// ─── Tab Button Component ─────────────────────────────────────────────────────
+
+interface TabButtonProps {
+  tab: Tab;
+  isActive: boolean;
+  onClick: () => void;
+  icon: string;
+}
+
+function TabButton({ tab, isActive, onClick, icon }: TabButtonProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [showLabel, setShowLabel] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (!isActive) {
+      setShowLabel(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (!isActive) {
+      setShowLabel(false);
+    }
+  };
+
+  // Si está activo, siempre muestra la etiqueta
+  const shouldShowLabel = isActive || showLabel;
+
+  return (
+    <motion.button
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      className="relative shrink-0 bg-transparent border-none cursor-pointer transition-colors duration-200 flex items-center gap-3"
+      style={{
+        fontFamily: "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
+        fontWeight: 700,
+        fontSize: "clamp(1rem, 2vw, 1.4rem)",
+        color: isActive ? "white" : "#909090",
+      }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+    >
+      {/* Contenedor del icono con el texto que se despliega */}
+      <div className="relative flex items-center">
+        {/* Icono PNG */}
+        <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center shrink-0">
+          <img 
+            src={icon} 
+            alt={tab.label}
+            className="w-full h-full object-contain"
+            style={{
+              filter: isActive ? 'brightness(1)' : 'brightness(0.6)',
+              transition: 'filter 0.3s ease'
+            }}
+          />
+        </div>
+
+        {/* Contenedor del texto con desbordamiento oculto */}
+        <div className="overflow-hidden" style={{ maxWidth: shouldShowLabel ? '300px' : '0px' }}>
+          <motion.span
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ 
+              opacity: shouldShowLabel ? 1 : 0,
+              x: shouldShowLabel ? 0 : -20
+            }}
+            transition={{ 
+              duration: 0.4, 
+              ease: "easeInOut"
+            }}
+            className="whitespace-nowrap"
+            style={{
+              fontFamily: "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
+              fontWeight: 700,
+              fontSize: "clamp(1rem, 2vw, 1.4rem)",
+              color: isActive ? "white" : "#909090",
+            }}
+          >
+            {tab.label}
+          </motion.span>
+        </div>
+      </div>
+
+      {/* Indicador de tab activo */}
+      {isActive && (
+        <motion.div
+          layoutId="tab-indicator"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-white rounded-full"
+          transition={{ type: "spring", stiffness: 400, damping: 35 }}
+        />
+      )}
+    </motion.button>
+  );
+}
+
+// ─── Tabbed Container ─────────────────────────────────────────────────────────
 
 export function TabbedSection() {
   const [active, setActive] = useState<TabId>("education");
@@ -178,30 +287,17 @@ export function TabbedSection() {
           transition={{ duration: 0.7 }}
           className="bg-black rounded-[42px] p-8 md:p-12 flex flex-col gap-10"
         >
-          {/* Tab bar */}
+          {/* Tab bar - ahora los tabs están en una fila horizontal */}
           <div className="flex flex-col gap-1">
-            <div className="flex gap-6 md:gap-11 overflow-x-auto pb-1 scrollbar-none">
+            <div className="flex flex-wrap gap-6 md:gap-11 overflow-x-auto pb-1 scrollbar-none">
               {tabs.map((tab) => (
-                <button
+                <TabButton
                   key={tab.id}
+                  tab={tab}
+                  isActive={active === tab.id}
                   onClick={() => setActive(tab.id)}
-                  className="relative shrink-0 bg-transparent border-none cursor-pointer pb-3 transition-colors duration-200"
-                  style={{
-                    fontFamily: "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "clamp(1rem, 2vw, 1.4rem)",
-                    color: active === tab.id ? "white" : "#909090",
-                  }}
-                >
-                  {tab.label}
-                  {active === tab.id && (
-                    <motion.div
-                      layoutId="tab-indicator"
-                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-white rounded-full"
-                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                    />
-                  )}
-                </button>
+                  icon={tab.icon}
+                />
               ))}
             </div>
             <div className="h-[2px] bg-white/15 w-full" />

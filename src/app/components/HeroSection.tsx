@@ -7,9 +7,9 @@ import imgPhoto  from "../../imports/Yo.png";
 
 const PIVOT_X           = 485;    // centro X del pivote en el viewBox (entre A y n)
 const MAX_DIST          = 460;    // distancia máx desde el pivote (svg units)
-const MAX_STAGGER       = 0.28;   // retraso máx de letras del extremo (scroll progress)
+const MAX_STAGGER       = 0.18;   // retraso máx de letras del extremo (scroll progress)
 const TRAVEL_DURATION   = 0.42;   // duración del viaje en scroll progress
-const TRAVEL_PX         = -500;   // distancia de subida en CSS px
+const TRAVEL_PX         = -200;   // distancia de subida en CSS px
 const ENTRY_BASE_DELAY  = 0.45;   // delay de la primera letra al cargar (seg)
 const ENTRY_MAX_STAGGER = 0.25;   // stagger adicional para letras del extremo (seg)
 const ENTRY_FROM_Y      = -280;   // desde dónde caen las letras al cargar (CSS px)

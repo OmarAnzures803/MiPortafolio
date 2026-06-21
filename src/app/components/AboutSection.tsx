@@ -199,20 +199,21 @@ export function AboutSection() {
           <p
             className="text-center"
             style={{
-              fontFamily: "'Ubuntu Mono', monospace",
+              fontFamily: "'Clash Display', sans-serif",
               fontWeight: 700,
-              fontSize:   "clamp(1.2rem, 2.5vw, 1.8rem)",
-              color:      "#909090",
+              fontSize:   "clamp(1.8rem, 3vw, 2.5rem)",
+              color:      "#FFFFFF", // 
+              letterSpacing: "-0.02em",
             }}
           >
-            ¿Cómo me defino a mí mismo?
+            ¿Quién soy?
           </p>
           <p
             style={{
               fontFamily: "'Atkinson Hyperlegible', sans-serif",
               fontWeight: 700,
               fontSize:   "clamp(0.95rem, 1.8vw, 1.25rem)",
-              color:      "white",
+              color:      "#D4D4D4", //
               lineHeight: 1.6,
             }}
           >
