@@ -1,10 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
-import '../../styles/globals.css';
+import "../../styles/globals.css";
 
-import educationIcon from '../assets/Sprite-birrete.png';
-import toolsIcon from '../assets/Sprite-herramientas02.png';
-import careerIcon from '../assets/Sprite-medalla.png';
+import educationIcon from "../assets/Sprite-birrete.png";
+import toolsIcon from "../assets/Sprite-herramientas02.png";
+import careerIcon from "../assets/Sprite-medalla.png";
 
 // ─── Education ───────────────────────────────────────────────────────────────
 
@@ -32,13 +32,36 @@ function EducationContent() {
           transition={{ delay: i * 0.12, duration: 0.5 }}
           className="flex flex-col gap-2 relative"
         >
-          <div className="absolute -left-[41px] md:-left-[53px] top-[4px] w-3 h-3 rounded-full bg-[#767676]" />
-          <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontWeight: 700, fontSize: "clamp(0.95rem, 1.5vw, 1.25rem)", color: "white" }}>
+          <div className="absolute -left-[41px] md:-left-[53px] top-[4px] w-3 h-3 rounded-full bg-[#767676] " />
+          <p
+            style={{
+              fontFamily: "'Atkinson Hyperlegible', sans-serif",
+              fontWeight: 700,
+              fontSize: "clamp(0.95rem, 1.5vw, 1.25rem)",
+              color: "white",
+            }}
+          >
             {item.degree}
           </p>
           <div>
-            <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "1rem", color: "#b0b0b0" }}>{item.school}</p>
-            <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "0.9rem", color: "#767676" }}>{item.period}</p>
+            <p
+              style={{
+                fontFamily: "'Atkinson Hyperlegible', sans-serif",
+                fontSize: "1rem",
+                color: "#b0b0b0",
+              }}
+            >
+              {item.school}
+            </p>
+            <p
+              style={{
+                fontFamily: "'Atkinson Hyperlegible', sans-serif",
+                fontSize: "0.9rem",
+                color: "#767676",
+              }}
+            >
+              {item.period}
+            </p>
           </div>
         </motion.div>
       ))}
@@ -63,7 +86,7 @@ const tools = [
   { name: "Vite", category: "Build", icon: "⚡" },
 ];
 
-function ToolCard({ tool, index }: { tool: typeof tools[0]; index: number }) {
+function ToolCard({ tool, index }: { tool: (typeof tools)[0]; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -71,13 +94,29 @@ function ToolCard({ tool, index }: { tool: typeof tools[0]; index: number }) {
       transition={{ delay: index * 0.055, duration: 0.45, ease: "easeOut" }}
       whileHover={{ scale: 1.03, backgroundColor: "rgba(255,255,255,0.09)" }}
       className="flex flex-col gap-3 p-5 rounded-2xl cursor-default transition-colors duration-200"
-      style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+      style={{
+        backgroundColor: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
     >
       <span style={{ fontSize: "2rem", lineHeight: 1 }}>{tool.icon}</span>
-      <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontWeight: 700, fontSize: "1rem", color: "white" }}>
+      <p
+        style={{
+          fontFamily: "'Atkinson Hyperlegible', sans-serif",
+          fontWeight: 700,
+          fontSize: "1rem",
+          color: "white",
+        }}
+      >
         {tool.name}
       </p>
-      <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "0.85rem", color: "#909090" }}>
+      <p
+        style={{
+          fontFamily: "'Atkinson Hyperlegible', sans-serif",
+          fontSize: "0.85rem",
+          color: "#909090",
+        }}
+      >
         {tool.category}
       </p>
     </motion.div>
@@ -101,14 +140,16 @@ const experience = [
     role: "Desarrollador Frontend",
     company: "Empresa / Proyecto",
     period: "2024 – Presente",
-    description: "Desarrollo de interfaces de usuario con React y TypeScript. Diseño e implementación de componentes reutilizables con Tailwind CSS.",
+    description:
+      "Desarrollo de interfaces de usuario con React y TypeScript. Diseño e implementación de componentes reutilizables con Tailwind CSS.",
     tags: ["React", "TypeScript", "Tailwind CSS"],
   },
   {
     role: "Desarrollador de Software",
     company: "Proyecto Universitario",
     period: "2023 – 2024",
-    description: "Desarrollo de aplicaciones web full-stack para proyectos académicos. Implementación de APIs REST y bases de datos relacionales.",
+    description:
+      "Desarrollo de aplicaciones web full-stack para proyectos académicos. Implementación de APIs REST y bases de datos relacionales.",
     tags: ["Node.js", "SQL", "JavaScript"],
   },
 ];
@@ -126,13 +167,43 @@ function CareerContent() {
         >
           <div className="absolute -left-[41px] md:-left-[53px] top-[4px] w-3 h-3 rounded-full bg-[#767676]" />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-            <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontWeight: 700, fontSize: "clamp(0.95rem, 1.5vw, 1.25rem)", color: "white" }}>
+            <p
+              style={{
+                fontFamily: "'Atkinson Hyperlegible', sans-serif",
+                fontWeight: 700,
+                fontSize: "clamp(0.95rem, 1.5vw, 1.25rem)",
+                color: "white",
+              }}
+            >
               {item.role}
             </p>
-            <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "0.9rem", color: "#767676" }}>{item.period}</p>
+            <p
+              style={{
+                fontFamily: "'Atkinson Hyperlegible', sans-serif",
+                fontSize: "0.9rem",
+                color: "#767676",
+              }}
+            >
+              {item.period}
+            </p>
           </div>
-          <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "1rem", color: "#b0b0b0" }}>{item.company}</p>
-          <p style={{ fontFamily: "'Atkinson Hyperlegible', sans-serif", fontSize: "0.95rem", color: "#909090", lineHeight: 1.6 }}>
+          <p
+            style={{
+              fontFamily: "'Atkinson Hyperlegible', sans-serif",
+              fontSize: "1rem",
+              color: "#b0b0b0",
+            }}
+          >
+            {item.company}
+          </p>
+          <p
+            style={{
+              fontFamily: "'Atkinson Hyperlegible', sans-serif",
+              fontSize: "0.95rem",
+              color: "#909090",
+              lineHeight: 1.6,
+            }}
+          >
             {item.description}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -167,12 +238,12 @@ type Tab = {
 };
 
 const tabs: Tab[] = [
-  { id: "education", label: "Antecedentes Educativos", icon: educationIcon },
+  { id: "education", label: "Educación", icon: educationIcon },
   { id: "tools", label: "Herramientas", icon: toolsIcon },
   { id: "career", label: "Carrera", icon: careerIcon },
 ];
 
-type TabId = typeof tabs[number]["id"];
+type TabId = (typeof tabs)[number]["id"];
 
 // ─── Tab Button Component ─────────────────────────────────────────────────────
 
@@ -184,24 +255,27 @@ interface TabButtonProps {
 }
 
 function TabButton({ tab, isActive, onClick, icon }: TabButtonProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [showLabel, setShowLabel] = useState(false);
 
+  // Reseteamos showLabel cuando el tab deja de estar activo
+  useEffect(() => {
+    if (!isActive) {
+      setShowLabel(false);
+    }
+  }, [isActive]);
+
   const handleMouseEnter = () => {
-    setIsHovered(true);
     if (!isActive) {
       setShowLabel(true);
     }
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
     if (!isActive) {
       setShowLabel(false);
     }
   };
 
-  // Si está activo, siempre muestra la etiqueta
   const shouldShowLabel = isActive || showLabel;
 
   return (
@@ -219,39 +293,43 @@ function TabButton({ tab, isActive, onClick, icon }: TabButtonProps) {
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      {/* Contenedor del icono con el texto que se despliega */}
       <div className="relative flex items-center">
-        {/* Icono PNG */}
-        <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center shrink-0">
-          <img 
-            src={icon} 
+        {/* Icono */}
+        <div className="relative w-12 h-12 md:w-20 md:h-20 flex items-center justify-center shrink-0">
+          <img
+            src={icon}
             alt={tab.label}
             className="w-full h-full object-contain"
             style={{
-              filter: isActive ? 'brightness(1)' : 'brightness(0.6)',
-              transition: 'filter 0.3s ease'
+              filter: isActive ? "brightness(1)" : "brightness(0.6)",
+              transition: "filter 0.3s ease",
             }}
           />
         </div>
 
-        {/* Contenedor del texto con desbordamiento oculto */}
-        <div className="overflow-hidden" style={{ maxWidth: shouldShowLabel ? '300px' : '0px' }}>
+        {/* Contenedor del texto */}
+        <div
+          className="overflow-hidden"
+          style={{
+            maxWidth: shouldShowLabel ? "300px" : "0px",
+            transition: "max-width 0.4s ease-in-out",
+          }}
+        >
           <motion.span
             initial={{ opacity: 0, x: -20 }}
-            animate={{ 
+            animate={{
               opacity: shouldShowLabel ? 1 : 0,
-              x: shouldShowLabel ? 0 : -20
+              x: shouldShowLabel ? 0 : -20,
             }}
-            transition={{ 
-              duration: 0.4, 
-              ease: "easeInOut"
-            }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             className="whitespace-nowrap"
             style={{
-              fontFamily: "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
+              fontFamily:
+                "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
               fontWeight: 700,
               fontSize: "clamp(1rem, 2vw, 1.4rem)",
               color: isActive ? "white" : "#909090",
+              marginLeft: shouldShowLabel ? "14px" : "0px",
             }}
           >
             {tab.label}
@@ -259,7 +337,6 @@ function TabButton({ tab, isActive, onClick, icon }: TabButtonProps) {
         </div>
       </div>
 
-      {/* Indicador de tab activo */}
       {isActive && (
         <motion.div
           layoutId="tab-indicator"
@@ -287,7 +364,6 @@ export function TabbedSection() {
           transition={{ duration: 0.7 }}
           className="bg-black rounded-[42px] p-8 md:p-12 flex flex-col gap-10"
         >
-          {/* Tab bar - ahora los tabs están en una fila horizontal */}
           <div className="flex flex-col gap-1">
             <div className="flex flex-wrap gap-6 md:gap-11 overflow-x-auto pb-1 scrollbar-none">
               {tabs.map((tab) => (
@@ -303,7 +379,6 @@ export function TabbedSection() {
             <div className="h-[2px] bg-white/15 w-full" />
           </div>
 
-          {/* Tab content */}
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
