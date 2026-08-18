@@ -5,6 +5,14 @@ import bttiCap1 from "../../imports/previews/btti-cap-1.png";
 import bttiCap2 from "../../imports/previews/btti-cap-2.png";
 import bttiCap3 from "../../imports/previews/btti-cap-3.png";
 
+import AgAnzCap1 from "../../imports/previews/AgAn-cap-1.png";
+import AgAnzCap2 from "../../imports/previews/AgAn-cap-2.png";
+import AgAnzCap3 from "../../imports/previews/AgAn-cap-3.png";
+
+import SkillSwapCap1 from "../../imports/previews/Skillswap-cap-1.png";
+import SkillSwapCap2 from "../../imports/previews/Skillswap-cap-2.png";
+import SkillSwapCap3 from "../../imports/previews/Skillswap-cap-3.png";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Project = {
@@ -29,24 +37,6 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Agua Anzures",
-    role: "Desarrollador Full Stack · Desktop y Mobile",
-    period: "Abril 2025 – Mayo 2025",
-    description:
-      "Sistema de gestión operativa para clientes, viajes y ventas. Incluye aplicación de escritorio, API REST y app móvil para administración de clientes, viajes, contactos y reportes. Desplegado en servidor Ubuntu con soporte de entorno productivo.",
-    tags: ["WPF", ".NET MAUI", "ASP.NET Core", "EF Core", "PostgreSQL", "MVVM"],
-    github: "https://github.com/OmarAnzures803/AguaAnzures.git",
-    demo: null,
-    figma: null,
-    gradient: "from-[#1a1a1a] to-[#0d0d0d]",
-    previewStyle: "mobile",
-    previewImages: [null, null, null],
-    preview: {
-      bg: "linear-gradient(135deg,#0a1f3c 0%,#1a3a5c 100%)",
-      accent: "#4a9eff",
-    },
-  },
-  {
     title: "Sistema Bolsa de Trabajo TI",
     role: "Desarrollador Frontend · Integración y Despliegue",
     period: "Enero 2026 – Abril 2026",
@@ -66,6 +56,25 @@ const projects: Project[] = [
     },
   },
   {
+    title: "Agua Anzures",
+    role: "Desarrollador Full Stack · Desktop y Mobile",
+    period: "Abril 2025 – Mayo 2025",
+    description:
+      "Sistema de gestión operativa para clientes, viajes y ventas. Incluye aplicación de escritorio, API REST y app móvil para administración de clientes, viajes, contactos y reportes. Desplegado en servidor Ubuntu con soporte de entorno productivo.",
+    tags: ["WPF", ".NET MAUI", "ASP.NET Core", "EF Core", "PostgreSQL", "MVVM"],
+    github: "https://github.com/OmarAnzures803/AguaAnzures.git",
+    demo: null,
+    figma:
+      "https://www.figma.com/design/wg2iNvuaUsvHsBlut5DV5n/Formulario-viaje?node-id=0-1&t=Av0q83DEVxzmJG68-1",
+    gradient: "from-[#1a1a1a] to-[#0d0d0d]",
+    previewStyle: "mobile",
+    previewImages: [AgAnzCap1, AgAnzCap2, AgAnzCap3],
+    preview: {
+      bg: "linear-gradient(135deg,#0a1f3c 0%,#1a3a5c 100%)",
+      accent: "#4a9eff",
+    },
+  },
+  {
     title: "SkillSwap",
     role: "Frontend Developer · App Móvil (Play Store)",
     period: "Agosto 2025 – Septiembre 2025",
@@ -73,11 +82,12 @@ const projects: Project[] = [
       "Aplicación móvil para el intercambio de habilidades, publicada en Play Store. Desarrollé componentes y pantallas en React Native con diseño modular en Figma, mejorando consistencia visual y reduciendo tiempos de iteración.",
     tags: ["React Native", "Figma", "Play Store", "Mobile"],
     github: "https://github.com/CrafterJe/Frontend-SkillSwap.git",
-    demo: null,
-    figma: null,
+    demo: "https://play.google.com/store/apps/details?id=com.crafterje.skillswap&pcampaignid=web_share",
+    figma:
+      "https://www.figma.com/design/iRcnAYMneG5kydIO743GTY/SkillSwap?node-id=0-1&t=6pmL87Knm64aDM5O-1",
     gradient: "from-[#1a1a1a] to-[#0d0d0d]",
     previewStyle: "mobile",
-    previewImages: [null, null, null],
+    previewImages: [SkillSwapCap1, SkillSwapCap2, SkillSwapCap3],
     preview: {
       bg: "linear-gradient(135deg,#1a0a3c 0%,#2d1a5c 100%)",
       accent: "#a78bfa",
@@ -131,7 +141,7 @@ function DesktopPreview({ project, shade, imageSrc }: PreviewProps) {
       <div
         className="w-full rounded-xl overflow-hidden shadow-2xl"
         style={{
-          height: 192,
+          height: "100%",
           border: "1px solid rgba(255,255,255,0.1)",
           filter: brightness(shade),
           background: "#0d0d0d",
@@ -143,7 +153,7 @@ function DesktopPreview({ project, shade, imageSrc }: PreviewProps) {
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover",
+            objectFit: "fill",
             display: "block",
           }}
         />
@@ -256,8 +266,8 @@ function MobilePreview({ project, shade, imageSrc }: PreviewProps) {
       <div className="flex justify-center items-end" style={{ height: 155 }}>
         <div
           style={{
-            width: 172,
-            height: 158,
+            width: 172, // full width of the card 172px
+            height: "100%", // full height of the card 162px
             borderRadius: 18,
             border: "1.5px solid rgba(255,255,255,0.14)",
             overflow: "hidden",
@@ -271,8 +281,8 @@ function MobilePreview({ project, shade, imageSrc }: PreviewProps) {
             alt={`Preview de ${project.title}`}
             style={{
               width: "100%",
-              height: "100%",
-              objectFit: "cover",
+              height: 346,
+              objectFit: "fill",
               display: "block",
             }}
           />
@@ -280,130 +290,6 @@ function MobilePreview({ project, shade, imageSrc }: PreviewProps) {
       </div>
     );
   }
-
-  return (
-    // Outer wrapper keeps the same bounding-box height as desktop so the fan
-    // constants stay unchanged. Phone is centered inside it.
-    <div className="flex justify-center items-end" style={{ height: 155 }}>
-      <div
-        style={{
-          width: 172,
-          height: 158,
-          borderRadius: 18,
-          background: project.preview.bg,
-          border: "1.5px solid rgba(255,255,255,0.14)",
-          overflow: "hidden",
-          filter: brightness(shade),
-          boxShadow: "0 8px 28px rgba(0,0,0,0.5)",
-        }}
-      >
-        {/* Status bar */}
-        <div
-          className="flex items-center justify-between px-2"
-          style={{ height: 22, background: "rgba(0,0,0,0.45)" }}
-        >
-          <div
-            style={{
-              width: 18,
-              height: 4,
-              borderRadius: 3,
-              background: "rgba(255,255,255,0.25)",
-            }}
-          />
-          {/* Notch */}
-          <div
-            style={{
-              width: 16,
-              height: 5,
-              borderRadius: 10,
-              background: "rgba(0,0,0,0.7)",
-            }}
-          />
-          <div
-            style={{
-              width: 10,
-              height: 4,
-              borderRadius: 3,
-              background: "rgba(255,255,255,0.2)",
-            }}
-          />
-        </div>
-        {/* App content */}
-        <div className="flex flex-col gap-1.5 px-2 py-2">
-          <div
-            style={{
-              height: 7,
-              width: "55%",
-              borderRadius: 3,
-              background: project.preview.accent,
-              opacity: 0.9,
-            }}
-          />
-          <div
-            style={{
-              height: 4,
-              width: "85%",
-              borderRadius: 3,
-              background: "rgba(255,255,255,0.15)",
-            }}
-          />
-          <div
-            style={{
-              height: 28,
-              width: "100%",
-              borderRadius: 6,
-              background: "rgba(255,255,255,0.07)",
-              marginTop: 2,
-            }}
-          />
-          <div
-            style={{
-              height: 20,
-              width: "100%",
-              borderRadius: 5,
-              background: "rgba(255,255,255,0.05)",
-            }}
-          />
-          <div
-            style={{
-              height: 20,
-              width: "100%",
-              borderRadius: 5,
-              background: "rgba(255,255,255,0.04)",
-            }}
-          />
-          {/* Bottom nav bar */}
-          <div
-            className="flex justify-around items-center"
-            style={{
-              height: 18,
-              borderRadius: 6,
-              background: "rgba(0,0,0,0.35)",
-              marginTop: 2,
-              padding: "0 4px",
-            }}
-          >
-            {[
-              project.preview.accent,
-              "rgba(255,255,255,0.25)",
-              "rgba(255,255,255,0.25)",
-            ].map((c, i) => (
-              <div
-                key={i}
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: c,
-                  opacity: 0.8,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 function ScreenshotPreview({ project, shade }: PreviewProps) {
@@ -682,7 +568,7 @@ export function ProjectsSection() {
                   "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
                 fontWeight: 700,
                 fontSize: "clamp(1.3rem, 3vw, 2rem)",
-                color: "#909090",
+                color: "#ffffff",
               }}
             >
               Mis Proyectos
