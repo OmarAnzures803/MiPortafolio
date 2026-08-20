@@ -62,7 +62,7 @@ function EducationContent() {
           transition={{ delay: i * 0.12, duration: 0.5 }}
           className="flex flex-col gap-2 relative"
         >
-          <div className="absolute -left-[46px] md:-left-[54px] top-[4px] w-3 h-3 rounded-full bg-[#767676]" />
+          <div className="absolute -left-[46px] md:-left-[34px] top-[4px] w-3 h-3 rounded-full bg-[#767676]" />
           <p
             style={{
               fontFamily: "'Atkinson Hyperlegible', sans-serif",
@@ -203,7 +203,7 @@ function CertificationsContent() {
           transition={{ delay: i * 0.12, duration: 0.5 }}
           className="flex flex-col gap-3 relative"
         >
-          <div className="absolute -left-[46px] md:-left-[54px] top-[4px] w-3 h-3 rounded-full bg-[#767676]" />
+          <div className="absolute -left-[46px] md:-left-[34px] top-[4px] w-3 h-3 rounded-full bg-[#767676]" />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
             <p
               style={{
@@ -327,7 +327,7 @@ function TabButton({
       style={{ color: isActive ? "white" : "#909090" }}
     >
       {/* Pixel art icon */}
-      <div className="w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shrink-0">
+      <div className="w-10 h-10 md:w-26 md:h-26 flex items-center justify-center shrink-0">
         <img
           src={tab.imgSrc}
           alt={tab.label}
@@ -553,7 +553,7 @@ export function TabbedSection() {
             {/* Tab bar */}
             <div className="flex flex-col gap-1 shrink-0">
               <div
-                className="flex gap-4 md:gap-8 overflow-x-auto pb-1"
+                className="flex justify-around gap-4 md:gap-8 overflow-x-auto pb-1"
                 style={{ scrollbarWidth: "none" }}
               >
                 {tabs.map((tab) => (
