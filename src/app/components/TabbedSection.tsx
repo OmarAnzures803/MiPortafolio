@@ -2,6 +2,22 @@ import { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import "../../styles/globals.css";
 
+import ReactIcon from "../../imports/develoment-icons/react.svg";
+import TypeScriptIcon from "../../imports/develoment-icons/typescript.svg";
+import TailwindIcon from "../../imports/develoment-icons/tailwindcss.svg";
+import NestjsIcon from "../../imports/develoment-icons/nestjs.svg";
+import Css3Icon from "../../imports/develoment-icons/css3.svg";
+import dockerIcon from "../../imports/develoment-icons/docker.svg";
+import Angular17Icon from "../../imports/develoment-icons/angular17.svg";
+import GithubIcon from "../../imports/develoment-icons/github.svg";
+import FigmaIcon from "../../imports/develoment-icons/figma.svg";
+import Html5Icon from "../../imports/develoment-icons/html5.svg";
+import JsIcon from "../../imports/develoment-icons/js.svg";
+import MySqlIcon from "../../imports/develoment-icons/mysql.svg";
+import NetIcon from "../../imports/develoment-icons/net.svg";
+import PostmanIcon from "../../imports/develoment-icons/postman.svg";
+import ViteIcon from "../../imports/develoment-icons/vitejs.svg";
+
 import spriteBirrete from "../assets/Sprite-birrete.png";
 import spriteHerramientas from "../assets/Sprite-herramientas02.png";
 import spriteMedalla from "../assets/Sprite-medalla.png";
@@ -102,18 +118,25 @@ function EducationContent() {
 // ─── Tools ───────────────────────────────────────────────────────────────────
 
 const tools = [
-  { name: "React", category: "Frontend", icon: "⚛️" },
-  { name: "TypeScript", category: "Lenguaje", icon: "🟦" },
-  { name: "Tailwind CSS", category: "Estilos", icon: "🎨" },
-  { name: "Node.js", category: "Backend", icon: "🟢" },
-  { name: "Python", category: "Lenguaje", icon: "🐍" },
-  { name: "Git", category: "Control", icon: "🔀" },
-  { name: "Figma", category: "Diseño", icon: "🖼️" },
-  { name: "PostgreSQL", category: "Base de datos", icon: "🐘" },
-  { name: "Docker", category: "DevOps", icon: "🐳" },
-  { name: "Next.js", category: "Framework", icon: "▲" },
-  { name: "Express", category: "Backend", icon: "🚀" },
-  { name: "Vite", category: "Build", icon: "⚡" },
+  {
+    name: "React",
+    category: "Frontend",
+    icon: ReactIcon,
+  },
+  { name: "TypeScript", category: "Lenguaje", icon: TypeScriptIcon },
+  { name: "Tailwind CSS", category: "Estilos", icon: TailwindIcon },
+  { name: "Node.js", category: "Backend", icon: NestjsIcon },
+  { name: "Git", category: "Control", icon: GithubIcon },
+  { name: "Figma", category: "Diseño", icon: FigmaIcon },
+  { name: "Vite", category: "Build", icon: ViteIcon },
+  { name: "Docker", category: "DevOps", icon: dockerIcon },
+  { name: "MySQL", category: "Base de datos", icon: MySqlIcon },
+  { name: "HTML5", category: "Frontend", icon: Html5Icon },
+  { name: "CSS3", category: "Frontend", icon: Css3Icon },
+  { name: "JavaScript", category: "Lenguaje", icon: JsIcon },
+  { name: ".NET", category: "Framework", icon: NetIcon },
+  { name: "Postman", category: "Testing", icon: PostmanIcon },
+  { name: "Angular 17", category: "Framework", icon: Angular17Icon },
 ];
 
 function ToolCard({ tool, index }: { tool: (typeof tools)[0]; index: number }) {
@@ -129,7 +152,17 @@ function ToolCard({ tool, index }: { tool: (typeof tools)[0]; index: number }) {
         border: "1px solid rgba(255,255,255,0.08)",
       }}
     >
-      <span style={{ fontSize: "2rem", lineHeight: 1 }}>{tool.icon}</span>
+      <img
+        src={tool.icon}
+        alt={tool.name}
+        style={{
+          width: "2rem",
+          height: "2rem",
+          display: "block",
+          ...(tool.name === "Git" ? { filter: "brightness(0) invert(1)" } : {}),
+        }}
+      />
+
       <p
         style={{
           fontFamily: "'Atkinson Hyperlegible', sans-serif",

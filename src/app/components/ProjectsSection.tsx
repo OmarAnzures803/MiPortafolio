@@ -42,7 +42,15 @@ const projects: Project[] = [
     period: "Enero 2026 – Abril 2026",
     description:
       "Integré egresados-ui con AppEgresados, unificando la interfaz con la plataforma principal. Implementé pantallas y flujos de navegación para distintos roles. Desplegué en servidor Ubuntu vía SSH, validando rutas, vistas y carga dinámica de componentes.",
-    tags: ["React", "Frontend", "SSH", "Ubuntu", "Despliegue"],
+    tags: [
+      "PHP",
+      "JavaScript",
+      "CSS",
+      "Frontend",
+      "SSH",
+      "Ubuntu",
+      "Despliegue",
+    ],
     github: "https://github.com/Cacaguadios/AppEgresados.git",
     demo: "https://ti.utpuebla.edu.mx/bttiutp/login",
     figma:
@@ -61,7 +69,16 @@ const projects: Project[] = [
     period: "Abril 2025 – Mayo 2025",
     description:
       "Sistema de gestión operativa para clientes, viajes y ventas. Incluye aplicación de escritorio, API REST y app móvil para administración de clientes, viajes, contactos y reportes. Desplegado en servidor Ubuntu con soporte de entorno productivo.",
-    tags: ["WPF", ".NET MAUI", "ASP.NET Core", "EF Core", "PostgreSQL", "MVVM"],
+    tags: [
+      "WPF",
+      ".NET MAUI",
+      "ASP.NET Core",
+      "EF Core",
+      "PostgreSQL",
+      "MVVM",
+      "Hetzner Cloud",
+      "Coolify",
+    ],
     github: "https://github.com/OmarAnzures803/AguaAnzures.git",
     demo: null,
     figma:

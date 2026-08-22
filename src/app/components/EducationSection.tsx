@@ -5,7 +5,7 @@ const education = [
   {
     degree: "Ingeniería en Desarrollo y Gestión de Software",
     school: "Universidad Tecnológica de Puebla",
-    period: "2024 – 2026 (en proceso de titulación)",
+    period: "2024 – 2026",
   },
   {
     degree: "Técnico Superior Universitario en Tecnologías de la Información",
@@ -31,7 +31,8 @@ export function EducationSection() {
           <div className="flex flex-col gap-2">
             <p
               style={{
-                fontFamily: "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
+                fontFamily:
+                  "'Clash Display', 'Atkinson Hyperlegible', sans-serif",
                 fontWeight: 700,
                 fontSize: "clamp(1.3rem, 3vw, 2rem)",
                 color: "#909090",
